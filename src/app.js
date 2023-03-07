@@ -37,6 +37,9 @@ app.use(bodyParser.json({ limit: "4MB" }));
 
 // Routing
 require('./routes/product.routes')(app);
+require('./routes/category.routes')(app);
+require('./routes/measurement.routes')(app);
+require('./routes/location.routes')(app);
 
 // Error handler
 const errorConfig = require('./configs/error.config');

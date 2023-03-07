@@ -5,7 +5,7 @@ exports.find = (req, res, next) => {
   const type = req.query.type ? req.query.type : '';
   Product.aggregate()
     .match({
-      type: {$regex: type, $options: "i"}
+      type: { $regex: type, $options: "i" }
     })
     .addFields({
       id: "$_id"

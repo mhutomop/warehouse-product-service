@@ -25,6 +25,9 @@ module.exports = (app) => {
    *          application/json:
    *            schema:
    *              type: object
+   *              required:
+   *                - success
+   *                - data
    *              properties:
    *                success:
    *                  type: boolean
@@ -34,6 +37,14 @@ module.exports = (app) => {
    *                  type: array
    *                  items:
    *                    type: object
+   *                    required:
+   *                      - id
+   *                      - categoryId
+   *                      - categoryDetail
+   *                      - type
+   *                      - brand
+   *                      - measurementId
+   *                      - measurementDetail
    *                    properties:
    *                      id:
    *                        type: string
@@ -45,6 +56,8 @@ module.exports = (app) => {
    *                        example: 64056dc7c2c95ac1303b4b21
    *                      categoryDetail:
    *                        type: object
+   *                        required:
+   *                          - name
    *                        properties:
    *                          name:
    *                            type: string
@@ -64,6 +77,8 @@ module.exports = (app) => {
    *                        example: 640594d7c2c95ac1303b4b2c
    *                      measurementDetail:
    *                        type: object
+   *                        required:
+   *                          - unit
    *                        properties:
    *                          unit:
    *                            type: string
@@ -85,6 +100,12 @@ module.exports = (app) => {
    *        application/json:
    *          schema:
    *            type: object
+   *            required:
+   *              - categoryId
+   *              - type
+   *              - brand
+   *              - measurementId
+   *              - locations
    *            properties:
    *              categoryId:
    *                type: string
@@ -108,12 +129,6 @@ module.exports = (app) => {
    *                  type: string
    *                  description: Location IDs of new product.
    *                  example: 64056ddac2c95ac1303b4b23
-   *            required:
-   *              - categoryId
-   *              - type
-   *              - brand
-   *              - measurementId
-   *              - locations
    *    responses:
    *      200:
    *        description: Success add new product.
@@ -121,6 +136,9 @@ module.exports = (app) => {
    *          application/json:
    *            schema:
    *              type: object
+   *              required:
+   *                - success
+   *                - data
    *              properties:
    *                success:
    *                  type: boolean
@@ -128,6 +146,9 @@ module.exports = (app) => {
    *                  example: true
    *                data:
    *                  type: object
+   *                  required:
+   *                    - id
+   *                    - type
    *                  properties:
    *                    id:
    *                      type: string
@@ -162,6 +183,9 @@ module.exports = (app) => {
    *          application/json:
    *            schema:
    *              type: object
+   *              required:
+   *                - success
+   *                - data
    *              properties:
    *                success:
    *                  type: boolean
@@ -169,6 +193,15 @@ module.exports = (app) => {
    *                  example: true
    *                data:
    *                  type: object
+   *                  required:
+   *                    - id
+   *                    - categoryId
+   *                    - categoryDetail
+   *                    - type
+   *                    - brand
+   *                    - measurementId
+   *                    - measurementDetail
+   *                    - inventories
    *                  properties:
    *                    id:
    *                      type: string
@@ -180,6 +213,8 @@ module.exports = (app) => {
    *                      example: 64056dc7c2c95ac1303b4b21
    *                    categoryDetail:
    *                      type: object
+   *                      required:
+   *                        - name
    *                      properties:
    *                        name:
    *                          type: string
@@ -199,6 +234,8 @@ module.exports = (app) => {
    *                      example: 640594d7c2c95ac1303b4b2c
    *                    measurementDetail:
    *                      type: object
+   *                      required:
+   *                        - unit
    *                      properties:
    *                        unit:
    *                          type: string
@@ -208,6 +245,11 @@ module.exports = (app) => {
    *                      type: array
    *                      items:
    *                        type: object
+   *                        required:
+   *                          - id
+   *                          - locationId
+   *                          - locationDetail
+   *                          - quantity
    *                        properties:
    *                          id:
    *                            type: string
@@ -219,6 +261,13 @@ module.exports = (app) => {
    *                            example: 64056ddac2c95ac1303b4b23
    *                          locationDetail:
    *                            type: object
+   *                            required:
+   *                              - site
+   *                              - building
+   *                              - floor
+   *                              - room
+   *                              - rack
+   *                              - rackLevel
    *                            properties:
    *                              site:
    *                                type: string
@@ -308,6 +357,9 @@ module.exports = (app) => {
    *          application/json:
    *            schema:
    *              type: object
+   *              required:
+   *                - success
+   *                - data
    *              properties:
    *                success:
    *                  type: boolean
@@ -315,6 +367,9 @@ module.exports = (app) => {
    *                  example: true
    *                data:
    *                  type: object
+   *                  required:
+   *                    - id
+   *                    - type
    *                  properties:
    *                    id:
    *                      type: string
@@ -349,6 +404,9 @@ module.exports = (app) => {
    *          application/json:
    *            schema:
    *              type: object
+   *              required:
+   *                - success
+   *                - data
    *              properties:
    *                success:
    *                  type: boolean
@@ -356,6 +414,9 @@ module.exports = (app) => {
    *                  example: true
    *                data:
    *                  type: object
+   *                  required:
+   *                    - acknowledged
+   *                    - deletedCount
    *                  properties:
    *                    acknowledged:
    *                      type: boolean
