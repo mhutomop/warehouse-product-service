@@ -1,5 +1,4 @@
-require("dotenv").config();
-
+require('dotenv').config();
 const { DB_URL } = process.env;
 
 module.exports = {

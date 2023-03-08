@@ -55,7 +55,6 @@ exports.find = (req, res, next) => {
 }
 
 exports.create = (req, res, next) => {
-  console.log(req.body)
   const locations = req.body.locations;
   const inventories = [];
   for (let location of locations) {

@@ -18,7 +18,7 @@ db.mongoose
 
 // App declaration
 const express = require('express');
-require("dotenv").config();
+require('dotenv').config();
 const { HOST, PORT } = process.env;
 
 const app = express();
@@ -32,8 +32,12 @@ const swaggerDocs = swaggerJsDoc(swaggerConfig);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Body parser
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: "4MB" }));
+
+// Middleware
+const auth = require('./middlewares/auth.middleware');
+app.use(auth);
 
 // Routing
 require('./routes/product.routes')(app);
