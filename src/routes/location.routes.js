@@ -10,42 +10,6 @@ module.exports = (app) => {
    *    summary: Get all locations.
    *    description: Get all locations by default.
    *    tags: ['locations']
-   *    parameters:
-   *      - in: query
-   *        name: site
-   *        schema:
-   *          type: string
-   *        required: false
-   *        description: Filter locations by site.
-   *        example: PT Len Industri (Persero)
-   *      - in: query
-   *        name: building
-   *        schema:
-   *          type: string
-   *        required: false
-   *        description: Filter locations by building.
-   *        example: Gedung E
-   *      - in: query
-   *        name: floor
-   *        schema:
-   *          type: string
-   *        required: false
-   *        description: Filter locations by floor.
-   *        example: 1
-   *      - in: query
-   *        name: room
-   *        schema:
-   *          type: string
-   *        required: false
-   *        description: Filter locations by room.
-   *        example: Gudang
-   *      - in: query
-   *        name: rack
-   *        schema:
-   *          type: string
-   *        required: false
-   *        description: Filter locations by rack.
-   *        example: A
    *    responses:
    *      200:
    *        description: Success get all locations.
