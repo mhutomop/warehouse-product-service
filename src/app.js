@@ -23,6 +23,10 @@ const { HOST, PORT } = process.env;
 
 const app = express();
 
+// CORS
+const cors = require('cors');
+app.use(cors());
+
 // Swagger Documentation
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
