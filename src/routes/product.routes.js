@@ -123,7 +123,7 @@ module.exports = (app) => {
    *                type: string
    *                description: Measurement ID of new product.
    *                example: 640594d7c2c95ac1303b4b2c
-   *              locations:
+   *              locationIds:
    *                type: array
    *                items:
    *                  type: string
@@ -138,26 +138,15 @@ module.exports = (app) => {
    *              type: object
    *              required:
    *                - success
-   *                - data
+   *                - message
    *              properties:
    *                success:
    *                  type: boolean
    *                  description: Success true/false.
    *                  example: true
-   *                data:
-   *                  type: object
-   *                  required:
-   *                    - id
-   *                    - type
-   *                  properties:
-   *                    id:
-   *                      type: string
-   *                      description: ID of new created product.
-   *                      example: 6405fb100e7ccd6206c41917
-   *                    type:
-   *                      type: string
-   *                      description: Type of new created product.
-   *                      example: Shotgun
+   *                message:
+   *                  type: string
+   *                  example: Product [Shotgun] successfully added!
   */
   router.post('/api/products', products.create);
 
@@ -359,26 +348,15 @@ module.exports = (app) => {
    *              type: object
    *              required:
    *                - success
-   *                - data
+   *                - message
    *              properties:
    *                success:
    *                  type: boolean
    *                  description: Success true/false.
    *                  example: true
-   *                data:
-   *                  type: object
-   *                  required:
-   *                    - id
-   *                    - type
-   *                  properties:
-   *                    id:
-   *                      type: string
-   *                      description: ID of updated product.
-   *                      example: 6405fb100e7ccd6206c41917
-   *                    type:
-   *                      type: string
-   *                      description: Type of updated product.
-   *                      example: Shotgun
+   *                message:
+   *                  type: string
+   *                  example: Product [Shotgun] successfully updated!
   */
   router.put('/api/products/:id', products.updateOne);
 
@@ -406,26 +384,15 @@ module.exports = (app) => {
    *              type: object
    *              required:
    *                - success
-   *                - data
+   *                - message
    *              properties:
    *                success:
    *                  type: boolean
    *                  description: Success true/false.
    *                  example: true
-   *                data:
-   *                  type: object
-   *                  required:
-   *                    - acknowledged
-   *                    - deletedCount
-   *                  properties:
-   *                    acknowledged:
-   *                      type: boolean
-   *                      description: Status product deletion.
-   *                      example: true
-   *                    deletedCount:
-   *                      type: integer
-   *                      description: Total deleted product.
-   *                      example: 1
+   *                message:
+   *                  type: string
+   *                  example: Product [Shotgun] successfully removed!
   */
   router.delete('/api/products/:id', products.deleteOne);
 

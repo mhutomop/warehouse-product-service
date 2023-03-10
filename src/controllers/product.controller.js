@@ -27,7 +27,8 @@ exports.find = (req, res, next) => {
       }]
     })
     .unwind({
-      path: '$categoryDetail'
+      path: '$categoryDetail',
+      preserveNullAndEmptyArrays: true
     })
     .lookup({
       from: "measurements",
@@ -41,7 +42,8 @@ exports.find = (req, res, next) => {
       }]
     })
     .unwind({
-      path: "$measurementDetail"
+      path: "$measurementDetail",
+      preserveNullAndEmptyArrays: true
     })
     .then((result) => {
       res.send({
@@ -55,11 +57,11 @@ exports.find = (req, res, next) => {
 }
 
 exports.create = (req, res, next) => {
-  const locations = req.body.locations;
+  const locationIds = req.body.locationIds;
   const inventories = [];
-  for (let location of locations) {
+  for (let locationId of locationIds) {
     inventories.push({
-      locationId: new db.mongoose.Types.ObjectId(location),
+      locationId: new db.mongoose.Types.ObjectId(locationId),
       quantity: 0
     })
   }
@@ -75,13 +77,16 @@ exports.create = (req, res, next) => {
     .then((result) => {
       res.send({
         success: true,
-        data: {
-          id: result.id,
-          type: result.type
-        }
+        message: `Product [${result.type}] successfully added!`
       });
     })
     .catch((err) => {
+      if (err.code == 11000) {
+        res.status(422).send({
+          success: false,
+          message: `Product [${product.type}] is already exists!`
+        });
+      }
       next(err);
     })
 }
@@ -93,7 +98,8 @@ exports.findOne = (req, res, next) => {
       _id: id
     })
     .unwind({
-      path: "$inventories"
+      path: "$inventories",
+      preserveNullAndEmptyArrays: true
     })
     .lookup({
       from: "locations",
@@ -107,7 +113,8 @@ exports.findOne = (req, res, next) => {
       }]
     })
     .unwind({
-      path: "$inventories.locationDetail"
+      path: "$inventories.locationDetail",
+      preserveNullAndEmptyArrays: true
     })
     .addFields({
       "inventories.id": "$inventories._id"
@@ -146,6 +153,11 @@ exports.findOne = (req, res, next) => {
       "products.inventories": "$inventories"
     })
     .replaceRoot('$products')
+    .addFields({
+      inventories: { 
+        $cond: { if: { $eq: [ "$inventories", [{}] ] }, then: [], else: "$inventories" }
+      }
+    })
     .lookup({
       from: 'categories',
       localField: 'categoryId',
@@ -158,7 +170,8 @@ exports.findOne = (req, res, next) => {
       }]
     })
     .unwind({
-      path: '$categoryDetail'
+      path: '$categoryDetail',
+      preserveNullAndEmptyArrays: true
     })
     .lookup({
       from: 'measurements',
@@ -172,7 +185,8 @@ exports.findOne = (req, res, next) => {
       }]
     })
     .unwind({
-      path: '$measurementDetail'
+      path: '$measurementDetail',
+      preserveNullAndEmptyArrays: true
     })
     .then((result) => {
       res.send({
@@ -189,43 +203,60 @@ exports.updateOne = async (req, res, next) => {
   const id = new db.mongoose.Types.ObjectId(req.params.id);
   const update = req.body;
   const product = await Product.findOne({ _id: id }).exec();
-  for (let inventoryId of update.removeInventoryIds) {
-    product.inventories.pull({
-      _id: new db.mongoose.Types.ObjectId(inventoryId)
-    })
-  }
-  for (let locationId of update.addLocationIds) {
-    product.inventories.push({
-      locationId: new db.mongoose.Types.ObjectId(locationId),
-      quantity: 0
-    })
-  }
-  for (let field in update) {
-    product[field] = update[field];
-  }
+  if (product) {
+    for (let inventoryId of update.removeInventoryIds) {
+      product.inventories.pull({
+        _id: new db.mongoose.Types.ObjectId(inventoryId)
+      })
+    }
+    for (let locationId of update.addLocationIds) {
+      product.inventories.push({
+        locationId: new db.mongoose.Types.ObjectId(locationId),
+        quantity: 0
+      })
+    }
+    for (let field in update) {
+      product[field] = update[field];
+    }
 
-  product.save()
-    .then((result) => {
-      res.send({
-        success: true,
-        data: result
-      });
-    })
-    .catch((err) => {
-      next(err);
-    })
+    product.save()
+      .then((result) => {
+        res.send({
+          success: true,
+          message: `Product [${result.type}] successfully updated!`
+        });
+      })
+      .catch((err) => {
+        next(err);
+      })
+  }
+  else {
+    res.status(422).send({
+      success: false,
+      message: `Product not found!`
+    });
+  }
 }
 
-exports.deleteOne = (req, res, next) => {
+exports.deleteOne = async (req, res, next) => {
   const id = new db.mongoose.Types.ObjectId(req.params.id);
-  Product.deleteOne({ _id: id })
-    .then((result) => {
-      res.send({
-        success: true,
-        data: result
-      });
-    })
-    .catch((err) => {
-      next(err);
-    })
+  const product = await Product.findOne({ _id: id }).exec();
+  if (product) {
+    product.deleteOne()
+      .then(() => {
+        res.send({
+          success: true,
+          message: `Product [${product.type}] successfully removed!`
+        });
+      })
+      .catch((err) => {
+        next(err);
+      })
+  }
+  else {
+    res.status(422).send({
+      success: false,
+      message: `Product not found!`
+    });
+  }
 }
